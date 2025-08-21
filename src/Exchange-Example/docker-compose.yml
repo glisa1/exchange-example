@@ -1,0 +1,107 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: pg
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+      APP_DB_NAME: ${APP_DB_NAME}
+      KC_DB_NAME: ${KC_DB_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ../../postgres/initdb:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0
+    container_name: keycloak
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: [
+      "start",
+      "--http-enabled=true",
+      "--hostname-strict=false",
+      "--import-realm"
+    ]
+    environment:
+      KEYCLOAK_ADMIN: ${KC_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KC_ADMIN_PASSWORD}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres:5432/${KC_DB_NAME}
+      KC_DB_USERNAME: ${PG_USER}
+      KC_DB_PASSWORD: ${PG_PASSWORD}
+    ports:
+      - "8080:8080"
+    volumes:
+      - ../../keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json:ro
+    healthcheck:
+      test: ["CMD", "/opt/keycloak/bin/kc.sh", "show-config"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+
+  kafka:
+    image: bitnami/kafka:3.7
+    container_name: kafka
+    restart: unless-stopped
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_ENABLE_KRAFT: "yes"
+      KAFKA_CFG_NODE_ID: 1
+      KAFKA_CFG_PROCESS_ROLES: controller,broker
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "true"
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+    healthcheck:
+      test: ["CMD-SHELL", "kafka-topics.sh --bootstrap-server localhost:9092 --list >/dev/null 2>&1"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    depends_on:
+      kafka:
+        condition: service_healthy
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
+    ports:
+      - "8081:8080"
+
+  api:
+    build:
+      context: ./Exchange-Example-Api
+      dockerfile: Dockerfile
+    container_name: exchange-example-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Default: Host=postgres;Port=5432;Database=${APP_DB_NAME};Username=${PG_USER};Password=${PG_PASSWORD}
+      Kafka__BootstrapServers: kafka:9092
+      Auth__Authority: http://keycloak:8080/realms/${KC_REALM}
+      Auth__Audience: ${KC_CLIENT_ID}
+    ports:
+      - "5000:8080"
+
+volumes:
+  pg_data:
