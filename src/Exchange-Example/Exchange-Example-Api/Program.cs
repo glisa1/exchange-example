@@ -1,5 +1,5 @@
+using Exchange_Example_Api.Configuration;
 using Exchange_Example_Api.Data;
-using Exchange_Example_Api.Endpoints;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -30,11 +30,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("RequireUser", policy => policy.RequireClaim(ClaimTypes.Role, "api.user", "api.admin"));
-    options.AddPolicy("RequireAdmin", policy => policy.RequireClaim(ClaimTypes.Role, "api.admin"));
-});
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("RequireUser", policy => policy.RequireClaim(ClaimTypes.Role, "api.user", "api.admin"))
+    .AddPolicy("RequireAdmin", policy => policy.RequireClaim(ClaimTypes.Role, "api.admin"));
+
+builder.Services.ConfigureServices();
 
 var app = builder.Build();
 
@@ -51,6 +51,6 @@ app.UseAuthorization();
 
 app.UseHttpsRedirection();
 
-CustomEndpointBuilder.MapAllCustomEndpoints(app);
+CustomEndpointConfiguration.MapAllCustomEndpoints(app);
 
 app.Run();

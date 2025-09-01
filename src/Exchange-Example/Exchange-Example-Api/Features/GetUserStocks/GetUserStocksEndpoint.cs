@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Exchange_Example_Api.Data;
+using Microsoft.EntityFrameworkCore;
 
-namespace Exchange_Example_Api.Endpoints.GetUserStocks;
+namespace Exchange_Example_Api.Features.GetUserStocks;
 
 public static class GetUserStocksEndpoint
 {
     public static void MapGetUserStocksEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/user-stocks/{userId}", async (int userId, Data.AppDbContext dbContext) =>
+        app.MapGet("/user-stocks/{userId}", async (int userId, AppDbContext dbContext) =>
         {
             var userStocks = await dbContext.UserStocks
                 .Where(us => us.UserId == userId)

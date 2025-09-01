@@ -1,4 +1,4 @@
-﻿namespace Exchange_Example_Api.Endpoints.Status;
+﻿namespace Exchange_Example_Api.Features.GetStatus;
 
 public static class GetStatusEndpoint
 {

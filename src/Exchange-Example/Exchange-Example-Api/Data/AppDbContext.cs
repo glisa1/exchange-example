@@ -1,17 +1,24 @@
-﻿using Exchange_Example_Api.Models;
+﻿using Exchange_Example_Api.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Exchange_Example_Api.Data;
 
-public class AppDbContext : DbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
     public DbSet<UserStocks> UserStocks => Set<UserStocks>();
+    public DbSet<Stock> Stocks => Set<Stock>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // Fix relationships by removing ids and adding navigation properties
+
         modelBuilder.Entity<UserStocks>().ToTable("user_stocks").HasKey(us => us.Id);
         modelBuilder.Entity<UserStocks>().Property(us => us.UserId).IsRequired();
         modelBuilder.Entity<UserStocks>().Property(us => us.StockId).IsRequired();
         modelBuilder.Entity<UserStocks>().Property(us => us.Quantity).IsRequired().HasColumnType("decimal(18, 2)");
+
+        modelBuilder.Entity<Stock>().ToTable("stocks").HasKey(s => s.Id);
+        modelBuilder.Entity<Stock>().Property(s => s.Ticker).IsRequired().HasMaxLength(10);
+        modelBuilder.Entity<Stock>().Property(s => s.Name).IsRequired().HasMaxLength(100);
+        modelBuilder.Entity<Stock>().Property(s => s.Price).IsRequired().HasColumnType("decimal(18, 2)");
     }
 }

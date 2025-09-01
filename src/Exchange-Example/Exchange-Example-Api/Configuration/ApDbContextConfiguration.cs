@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Exchange_Example_Api.Data;
+using Microsoft.EntityFrameworkCore;
 
-namespace Exchange_Example_Api.Data;
+namespace Exchange_Example_Api.Configuration;
 
 public static class ApDbContextConfiguration
 {
