@@ -11,4 +11,11 @@ public static class ApDbContextConfiguration
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
         dbContext.Database.Migrate();
     }
+
+    public static void SeedDatabase(this IApplicationBuilder app)
+    {
+        using var scope = app.ApplicationServices.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        DbSeeder.Seed(dbContext);
+    }
 }

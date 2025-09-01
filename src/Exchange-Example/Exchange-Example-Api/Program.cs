@@ -46,6 +46,11 @@ if (app.Environment.IsDevelopment())
 
 ApDbContextConfiguration.RunMigrationsOnStartup(app);
 
+if (app.Environment.IsDevelopment())
+{
+    ApDbContextConfiguration.SeedDatabase(app);
+}
+
 app.UseAuthentication();
 app.UseAuthorization();
 

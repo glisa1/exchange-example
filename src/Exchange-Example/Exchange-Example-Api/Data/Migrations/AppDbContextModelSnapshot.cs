@@ -34,7 +34,7 @@ namespace Exchange_Example_Api.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<double>("Price")
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("Ticker")
