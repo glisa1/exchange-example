@@ -11,14 +11,16 @@ public static class BuyStocksEndpoint
                 return Results.BadRequest(new { Message = "Invalid input data." });
             }
 
-            if (!await buyStocksService.StockExists(stocks.StockId))
+            var stock = await buyStocksService.GetStockById(stocks.StockId);
+
+            if (stock == null)
             {
                 return Results.NotFound(new { Message = $"Stock with ID {stocks.StockId} not found." });
             }
 
             // Additional check if the user has money to buy the stocks. But that could also be handled in another api call.
 
-            await buyStocksService.BuyStocks(stocks);
+            await buyStocksService.BuyStocks(stocks, stock);
 
             return Results.Ok();
         })

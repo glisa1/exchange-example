@@ -1,6 +1,10 @@
 ﻿namespace Exchange_Example_Api.Data.Models;
 
-public sealed record UserStocks(int Id, int UserId, int StockId, decimal Quantity)
+public sealed class UserStocks
 {
-    public override string ToString() => $"UserStocks(UserId: {UserId}, StockId: {StockId}, Quantity: {Quantity})";
+    public int Id { get; set; }
+    public int UserId { get; set; }
+    public int StockId { get; set; }
+    public Stock Stock { get; set; } = null!;
+    public decimal Quantity { get; set; }
 }

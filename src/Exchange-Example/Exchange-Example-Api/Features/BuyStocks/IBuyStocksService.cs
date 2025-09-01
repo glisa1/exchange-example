@@ -1,8 +1,10 @@
-﻿namespace Exchange_Example_Api.Features.BuyStocks;
+﻿using Exchange_Example_Api.Data.Models;
+
+namespace Exchange_Example_Api.Features.BuyStocks;
 
 public interface IBuyStocksService
 {
-    public Task BuyStocks(BuyStocksModel model);
+    public Task BuyStocks(BuyStocksModel model, Stock stock);
 
-    public Task<bool> StockExists(int stockId);
+    public Task<Stock?> GetStockById(int stockId);
 }

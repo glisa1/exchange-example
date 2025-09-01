@@ -6,7 +6,7 @@ namespace Exchange_Example_Api.Features.BuyStocks;
 
 public class BuyStocksService(AppDbContext dbContext) : IBuyStocksService
 {
-    public async Task BuyStocks(BuyStocksModel model)
+    public async Task BuyStocks(BuyStocksModel model, Stock stock)
     {
         var existingStocksForUser = await dbContext.UserStocks
             .Where(us => us.UserId == model.UserId && us.StockId == model.StockId)
@@ -14,28 +14,26 @@ public class BuyStocksService(AppDbContext dbContext) : IBuyStocksService
 
         if (existingStocksForUser != null)
         {
-            var updatedStocks = existingStocksForUser with
-            {
-                Quantity = existingStocksForUser.Quantity + model.Quantity
-            };
-            dbContext.UserStocks.Update(updatedStocks);
+            existingStocksForUser.Quantity += model.Quantity;
+            dbContext.UserStocks.Update(existingStocksForUser);
         }
         else
         {
-            var newUserStocks = new UserStocks(
-                0,
-                model.UserId,
-                model.StockId,
-                model.Quantity
-            );
+            var newUserStocks = new UserStocks
+            {
+                UserId = model.UserId,
+                StockId = model.StockId,
+                Stock = stock,
+                Quantity = model.Quantity
+            };
             await dbContext.UserStocks.AddAsync(newUserStocks);
         }
 
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task<bool> StockExists(int stockId)
+    public async Task<Stock?> GetStockById(int stockId)
     {
-        return await dbContext.Stocks.AnyAsync(s => s.Id == stockId);
+        return await dbContext.Stocks.FindAsync(stockId);
     }
 }

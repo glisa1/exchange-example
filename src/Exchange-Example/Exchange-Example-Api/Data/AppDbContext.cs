@@ -9,16 +9,15 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Stock> Stocks => Set<Stock>();
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Fix relationships by removing ids and adding navigation properties
-
         modelBuilder.Entity<UserStocks>().ToTable("user_stocks").HasKey(us => us.Id);
         modelBuilder.Entity<UserStocks>().Property(us => us.UserId).IsRequired();
-        modelBuilder.Entity<UserStocks>().Property(us => us.StockId).IsRequired();
+        modelBuilder.Entity<UserStocks>().HasOne(us => us.Stock).WithMany(s => s.UserStocks).HasForeignKey(us => us.StockId);
         modelBuilder.Entity<UserStocks>().Property(us => us.Quantity).IsRequired().HasColumnType("decimal(18, 2)");
 
         modelBuilder.Entity<Stock>().ToTable("stocks").HasKey(s => s.Id);
         modelBuilder.Entity<Stock>().Property(s => s.Ticker).IsRequired().HasMaxLength(10);
         modelBuilder.Entity<Stock>().Property(s => s.Name).IsRequired().HasMaxLength(100);
         modelBuilder.Entity<Stock>().Property(s => s.Price).IsRequired().HasColumnType("decimal(18, 2)");
+        modelBuilder.Entity<Stock>().HasMany(s => s.UserStocks).WithOne(us => us.Stock).HasForeignKey(us => us.StockId);
     }
 }

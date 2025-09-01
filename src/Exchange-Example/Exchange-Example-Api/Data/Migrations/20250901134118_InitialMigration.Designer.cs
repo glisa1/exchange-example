@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Exchange_Example_Api.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250831174800_AddedStockTable")]
-    partial class AddedStockTable
+    [Migration("20250901134118_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -69,7 +69,25 @@ namespace Exchange_Example_Api.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("StockId");
+
                     b.ToTable("user_stocks", (string)null);
+                });
+
+            modelBuilder.Entity("Exchange_Example_Api.Data.Models.UserStocks", b =>
+                {
+                    b.HasOne("Exchange_Example_Api.Data.Models.Stock", "Stock")
+                        .WithMany("UserStocks")
+                        .HasForeignKey("StockId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Stock");
+                });
+
+            modelBuilder.Entity("Exchange_Example_Api.Data.Models.Stock", b =>
+                {
+                    b.Navigation("UserStocks");
                 });
 #pragma warning restore 612, 618
         }

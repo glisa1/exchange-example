@@ -66,7 +66,25 @@ namespace Exchange_Example_Api.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("StockId");
+
                     b.ToTable("user_stocks", (string)null);
+                });
+
+            modelBuilder.Entity("Exchange_Example_Api.Data.Models.UserStocks", b =>
+                {
+                    b.HasOne("Exchange_Example_Api.Data.Models.Stock", "Stock")
+                        .WithMany("UserStocks")
+                        .HasForeignKey("StockId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Stock");
+                });
+
+            modelBuilder.Entity("Exchange_Example_Api.Data.Models.Stock", b =>
+                {
+                    b.Navigation("UserStocks");
                 });
 #pragma warning restore 612, 618
         }
