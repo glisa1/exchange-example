@@ -1,7 +1,7 @@
 {
   "realm": "exchange-example",
   "enabled": true,
-  "registrationAllowed": false,
+  "registrationAllowed": true,
   "loginWithEmailAllowed": true,
   "clients": [
     {
@@ -15,6 +15,19 @@
       "redirectUris": [
         "http://localhost:5000/*",
         "http://localhost:3000/*"
+      ],
+      "webOrigins": [ "*" ]
+    },
+	{
+      "clientId": "exchange-example-client",
+      "name": "Exchange Example Client",
+      "publicClient": true,
+      "secret": "${KC_CLIENT_SECRET}",
+      "serviceAccountsEnabled": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": [
+        "http://localhost:4200/*"
       ],
       "webOrigins": [ "*" ]
     }
