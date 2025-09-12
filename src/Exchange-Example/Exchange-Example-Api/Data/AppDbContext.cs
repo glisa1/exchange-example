@@ -24,6 +24,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
         modelBuilder.Entity<Stock>().HasMany(s => s.UserStocks).WithOne(us => us.Stock).HasForeignKey(us => us.StockId);
 
         modelBuilder.Entity<User>().ToTable("users").HasKey(u => u.Id);
+        // Maybe set email to be unique?
         modelBuilder.Entity<User>().Property(u => u.Username).IsRequired().HasMaxLength(50);
         modelBuilder.Entity<User>().Property(u => u.Email).IsRequired().HasMaxLength(100);
         modelBuilder.Entity<User>().Property(u => u.Balance).IsRequired().HasColumnType("decimal(18, 2)");

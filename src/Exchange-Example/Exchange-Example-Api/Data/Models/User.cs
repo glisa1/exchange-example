@@ -6,6 +6,6 @@ public sealed class User
     public Guid KeycloakId { get; set; }
     public string Username { get; set; } = null!;
     public string Email { get; set; } = null!;
-    public decimal Balance { get; set; }
+    public double Balance { get; set; }
     public ICollection<UserStocks> UserStocks { get; set; } = [];
 }

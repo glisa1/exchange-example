@@ -34,6 +34,16 @@ builder.Services.AddAuthorizationBuilder()
     .AddPolicy("RequireUser", policy => policy.RequireClaim(ClaimTypes.Role, "api.user", "api.admin"))
     .AddPolicy("RequireAdmin", policy => policy.RequireClaim(ClaimTypes.Role, "api.admin"));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp",
+        policy => policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+    );
+});
+
 builder.Services.ConfigureServices();
 
 var app = builder.Build();
@@ -51,10 +61,12 @@ if (app.Environment.IsDevelopment())
     ApDbContextConfiguration.SeedDatabase(app);
 }
 
+app.UseHttpsRedirection();
+
+app.UseCors("AllowAngularApp");
+
 app.UseAuthentication();
 app.UseAuthorization();
-
-app.UseHttpsRedirection();
 
 CustomEndpointConfiguration.MapAllCustomEndpoints(app);
 
