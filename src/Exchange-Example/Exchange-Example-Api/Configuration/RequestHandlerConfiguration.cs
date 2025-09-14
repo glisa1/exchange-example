@@ -1,0 +1,14 @@
+﻿using Exchange_Example_Api.Features.CreateUser;
+using Exchange_Example_Api.Utils.Request;
+
+namespace Exchange_Example_Api.Configuration;
+
+public static class RequestHandlerConfiguration
+{
+    public static IServiceCollection AddRequestHandlers(this IServiceCollection services)
+    {
+        services.AddScoped<ICommandRequestHandler<CreateUserCommand, bool>, CreateUserCommandHandler>();
+
+        return services;
+    }
+}

@@ -2,7 +2,7 @@
 
 public interface ICreateUserService
 {
-    Task<bool> UserExistsByEmail(string email);
+    Task<bool> UserExistsByEmail(string email, CancellationToken cancellationToken = default);
 
-    Task CreateUser(CreateUserCommand command);
+    Task CreateUser(CreateUserCommand command, CancellationToken cancellationToken = default);
 }

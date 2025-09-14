@@ -6,7 +6,7 @@ namespace Exchange_Example_Api.Features.CreateUser;
 
 public class CreateUserService(AppDbContext dbContext) : ICreateUserService
 {
-    public async Task CreateUser(CreateUserCommand command)
+    public async Task CreateUser(CreateUserCommand command, CancellationToken cancellationToken = default)
     {
         var newUser = new User
         {
@@ -16,13 +16,13 @@ public class CreateUserService(AppDbContext dbContext) : ICreateUserService
             Balance = command.Balance
         };
 
-        await dbContext.Users.AddAsync(newUser);
+        await dbContext.Users.AddAsync(newUser, cancellationToken);
 
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<bool> UserExistsByEmail(string email)
+    public async Task<bool> UserExistsByEmail(string email, CancellationToken cancellationToken = default)
     {
-        return await dbContext.Users.AnyAsync(u => u.Email == email);
+        return await dbContext.Users.AnyAsync(u => u.Email == email, cancellationToken);
     }
 }
