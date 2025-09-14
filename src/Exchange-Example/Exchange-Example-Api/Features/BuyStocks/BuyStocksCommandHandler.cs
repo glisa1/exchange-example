@@ -2,7 +2,7 @@
 
 namespace Exchange_Example_Api.Features.BuyStocks;
 
-public class BuyStocksCommandHandler(IBuyStocksService buyStocksService) : ICommandRequestHandler<BuyStocksCommand, bool>
+public sealed class BuyStocksCommandHandler(IBuyStocksService buyStocksService) : ICommandRequestHandler<BuyStocksCommand, bool>
 {
     public async Task<bool> Handle(BuyStocksCommand command, CancellationToken cancellationToken = default)
     {

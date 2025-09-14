@@ -2,7 +2,7 @@
 
 namespace Exchange_Example_Api.Features.CreateUser;
 
-public class CreateUserCommandHandler(ICreateUserService createUserService) : ICommandRequestHandler<CreateUserCommand, bool>
+public sealed class CreateUserCommandHandler(ICreateUserService createUserService) : ICommandRequestHandler<CreateUserCommand, bool>
 {
     public async Task<bool> Handle(CreateUserCommand command, CancellationToken cancellationToken = default)
     {
