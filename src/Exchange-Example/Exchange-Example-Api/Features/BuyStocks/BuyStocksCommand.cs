@@ -3,7 +3,7 @@ using Exchange_Example_Api.Utils.Request;
 
 namespace Exchange_Example_Api.Features.BuyStocks;
 
-public class BuyStocksCommand : Command, IValidatable
+public sealed class BuyStocksCommand : Command, IValidatable
 {
     public int UserId { get; init; }
     public int StockId { get; init; }

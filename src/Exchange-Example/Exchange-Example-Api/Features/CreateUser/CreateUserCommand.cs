@@ -3,7 +3,7 @@ using Exchange_Example_Api.Utils.Request;
 
 namespace Exchange_Example_Api.Features.CreateUser;
 
-public class CreateUserCommand() : Command, IValidatable
+public sealed class CreateUserCommand() : Command, IValidatable
 {
     public string KeycloakId { get; init; }
     public string Username { get; init; }
