@@ -1,5 +1,7 @@
+using Confluent.Kafka;
 using Exchange_Example_Api.Configuration;
 using Exchange_Example_Api.Data;
+using Exchange_Example_Api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -46,6 +48,15 @@ builder.Services.AddCors(options =>
 
 builder.Services.ConfigureServices();
 builder.Services.AddRequestHandlers();
+
+builder.Services.AddSingleton(new ProducerConfig
+{
+    BootstrapServers = config["Kafka:BootstrapServers"] ?? "kafka:9092"
+});
+builder.Services.AddSingleton<KafkaProducer>();
+builder.Services.AddHostedService<ExchangePricesKafkaProducerService>();
+builder.Services.AddHostedService<ExchangePricesKafkaConsumerService>();
+
 
 var app = builder.Build();
 
