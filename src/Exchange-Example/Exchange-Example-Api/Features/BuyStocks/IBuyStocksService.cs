@@ -4,7 +4,7 @@ namespace Exchange_Example_Api.Features.BuyStocks;
 
 public interface IBuyStocksService
 {
-    public Task BuyStocks(BuyStocksModel model, Stock stock);
+    public Task BuyStocks(BuyStocksCommand model, Stock stock, CancellationToken cancellationToken = default);
 
-    public Task<Stock?> GetStockById(int stockId);
+    public Task<Stock?> GetStockById(int stockId, CancellationToken cancellationToken = default);
 }

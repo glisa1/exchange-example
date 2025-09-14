@@ -9,11 +9,11 @@ public class CreateUserCommandHandler(ICreateUserService createUserService) : IC
         var existingUser = await createUserService.UserExistsByEmail(command.Email, cancellationToken);
         if (existingUser)
         {
-            return await Task.FromResult(true);
+            return true;
         }
 
         await createUserService.CreateUser(command, cancellationToken);
 
-        return await Task.FromResult(true);
+        return false;
     }
 }
