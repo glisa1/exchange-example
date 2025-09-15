@@ -24,14 +24,14 @@ public class ExchangePricesKafkaConsumerService : BackgroundService
         };
 
         _consumer = new ConsumerBuilder<string, string>(config).Build();
-        _consumer.Subscribe("prices");
+        //_consumer.Subscribe("prices");
     }
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         await Task.Yield();
 
-        await Task.Delay(2000, cancellationToken);
+        _consumer.Subscribe("prices");
 
         try
         {
@@ -76,7 +76,9 @@ public class ExchangePricesKafkaConsumerService : BackgroundService
 
         if (stockExists)
         {
-            await db.Stocks.ExecuteUpdateAsync(
+            await db.Stocks
+                .Where(stock => stock.Id == priceChange.StockId)
+                .ExecuteUpdateAsync(
                 stock => stock.SetProperty(s => s.Price, priceChange.Price),
                 cancellationToken);
         }
