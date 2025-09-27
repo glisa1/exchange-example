@@ -24,7 +24,6 @@ public class ExchangePricesKafkaConsumerService : BackgroundService
         };
 
         _consumer = new ConsumerBuilder<string, string>(config).Build();
-        //_consumer.Subscribe("prices");
     }
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
