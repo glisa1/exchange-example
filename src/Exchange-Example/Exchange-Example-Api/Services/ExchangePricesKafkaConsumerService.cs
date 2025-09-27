@@ -1,7 +1,7 @@
 ﻿using Confluent.Kafka;
-using Confluent.Kafka.Admin;
 using Exchange_Example_Api.Data;
 using Exchange_Example_Api.Data.Models;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -11,8 +11,12 @@ public class ExchangePricesKafkaConsumerService : BackgroundService
 {
     private readonly IConsumer<string, string> _consumer;
     private readonly IServiceScopeFactory _scopeFactory;
+    private readonly IHubContext<ExchangePricesHub> _hubContext;
 
-    public ExchangePricesKafkaConsumerService(IConfiguration cfg, IServiceScopeFactory scopeFactory)
+    public ExchangePricesKafkaConsumerService(
+        IConfiguration cfg,
+        IServiceScopeFactory scopeFactory,
+        IHubContext<ExchangePricesHub> hubContext)
     {
         _scopeFactory = scopeFactory;
 
@@ -24,6 +28,7 @@ public class ExchangePricesKafkaConsumerService : BackgroundService
         };
 
         _consumer = new ConsumerBuilder<string, string>(config).Build();
+        _hubContext = hubContext;
     }
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
@@ -36,25 +41,20 @@ public class ExchangePricesKafkaConsumerService : BackgroundService
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                try
+                var result = _consumer.Consume(cancellationToken);
+                if (result?.Message != null)
                 {
-                    var result = _consumer.Consume(cancellationToken);
-                    if (result?.Message != null)
+                    var priceChange = JsonSerializer.Deserialize<ExchangePriceChangeModel>(result.Message.Value);
+                    if (priceChange != null)
                     {
-                        var priceChange = JsonSerializer.Deserialize<ExchangePriceChangeModel>(result.Message.Value);
-                        if (priceChange != null)
-                        {
-                            await UpdateStockPriceAsync(priceChange, cancellationToken);
-                        }
+                        await UpdateStockPriceAsync(priceChange, cancellationToken);
                     }
-                }
-                catch (CreateTopicsException e) when (e.Results[0].Error.Code != ErrorCode.UnknownTopicOrPart)
-                {
-                    throw;
+
+                    await _hubContext.Clients.All.SendAsync("ExchangePriceUpdate", result.Message.Value, cancellationToken: cancellationToken);
                 }
             }
         }
-        catch (OperationCanceledException)
+        finally
         {
             _consumer.Close();
         }

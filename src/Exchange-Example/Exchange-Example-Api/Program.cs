@@ -57,6 +57,7 @@ builder.Services.AddSingleton<KafkaProducer>();
 builder.Services.AddHostedService<ExchangePricesKafkaProducerService>();
 builder.Services.AddHostedService<ExchangePricesKafkaConsumerService>();
 
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -65,6 +66,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.MapHub<ExchangePricesHub>("/hubs/exchange-prices");
 
 ApDbContextConfiguration.RunMigrationsOnStartup(app);
 
