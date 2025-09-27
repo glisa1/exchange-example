@@ -7,7 +7,7 @@ public static class GetUserStocksEndpoint
 {
     public static void MapGetUserStocksEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/user-stocks/{userId}", async (int userId, IQueryRequestHandler<GetUserStocksQuery, List<UserStocks>> queryRequestHandler, CancellationToken cancellationToken) =>
+        app.MapGet("/api/user-stocks/{userId}", async (int userId, IQueryRequestHandler<GetUserStocksQuery, List<UserStocks>> queryRequestHandler, CancellationToken cancellationToken) =>
         {
             if (userId <= 0)
             {

@@ -7,7 +7,7 @@ public static class GetAllStocksEndpoint
 {
     public static void MapGetAllStocksEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/get-all-stocks", async (IQueryRequestHandler<GetAllStocksQuery, List<Stock>> queryHandler, CancellationToken cancelationToken) =>
+        app.MapGet("/api/get-all-stocks", async (IQueryRequestHandler<GetAllStocksQuery, List<Stock>> queryHandler, CancellationToken cancelationToken) =>
         {
             var stocks = await queryHandler.Handle(new GetAllStocksQuery(), cancelationToken);
             return Results.Ok(stocks);

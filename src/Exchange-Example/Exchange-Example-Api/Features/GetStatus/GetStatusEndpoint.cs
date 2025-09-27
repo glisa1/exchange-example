@@ -4,7 +4,7 @@ public static class GetStatusEndpoint
 {
     public static void MapGetStatusEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/status", () =>
+        app.MapGet("/api/status", () =>
         {
             return Results.Ok(new { Status = "Running", Timestamp = DateTime.UtcNow });
         })

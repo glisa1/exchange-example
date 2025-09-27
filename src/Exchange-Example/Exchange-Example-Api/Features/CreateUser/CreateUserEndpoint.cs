@@ -6,7 +6,7 @@ public static class CreateUserEndpoint
 {
     public static void MapCreateUserEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPost("/create-user", async (CreateUserCommand user, ICommandRequestHandler<CreateUserCommand, bool> commandHandler, CancellationToken cancelationToken) =>
+        app.MapPost("/api/create-user", async (CreateUserCommand user, ICommandRequestHandler<CreateUserCommand, bool> commandHandler, CancellationToken cancelationToken) =>
         {
             if (!user.IsValid())
             {

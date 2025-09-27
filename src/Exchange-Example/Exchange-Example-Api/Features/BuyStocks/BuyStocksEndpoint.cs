@@ -6,7 +6,7 @@ public static class BuyStocksEndpoint
 {
     public static void MapBuyStocksEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPost("/but-stocks", async (BuyStocksCommand stocks, ICommandRequestHandler<BuyStocksCommand, bool> commandHandler, CancellationToken cancellationToken) =>
+        app.MapPost("/api/but-stocks", async (BuyStocksCommand stocks, ICommandRequestHandler<BuyStocksCommand, bool> commandHandler, CancellationToken cancellationToken) =>
         {
             if (!stocks.IsValid())
             {
