@@ -15,6 +15,12 @@ builder.Services.AddOpenApi();
 
 var config = builder.Configuration;
 
+builder.Host.UseDefaultServiceProvider((context, options) =>
+{
+    options.ValidateOnBuild = true;
+    options.ValidateScopes = context.HostingEnvironment.IsDevelopment();
+});
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(config.GetConnectionString("Default")));
 
