@@ -6,9 +6,9 @@ public static class GetUserBalanceEndpoint
 {
     public static void MapGetUserBalanceEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapGet("/api/user-balance/{userId}", async (int userId, IQueryRequestHandler<GetUserBalanceQuery, double> queryRequestHandler, CancellationToken cancellationToken) =>
+        app.MapGet("/api/user-balance/{userId}", async (Guid userId, IQueryRequestHandler<GetUserBalanceQuery, double> queryRequestHandler, CancellationToken cancellationToken) =>
         {
-            if (userId <= 0)
+            if (userId == Guid.Empty)
             {
                 return Results.BadRequest(new { Message = "Invalid user ID." });
             }

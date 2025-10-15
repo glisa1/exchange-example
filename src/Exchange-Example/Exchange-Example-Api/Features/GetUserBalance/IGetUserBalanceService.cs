@@ -2,5 +2,5 @@
 
 public interface IGetUserBalanceService
 {
-    Task<double> GetBalanceAsync(int userId, CancellationToken cancellationToken = default);
+    Task<double> GetBalanceAsync(Guid userId, CancellationToken cancellationToken = default);
 }

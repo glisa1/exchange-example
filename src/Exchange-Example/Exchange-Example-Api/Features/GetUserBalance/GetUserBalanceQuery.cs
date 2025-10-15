@@ -4,5 +4,5 @@ namespace Exchange_Example_Api.Features.GetUserBalance;
 
 public sealed class GetUserBalanceQuery : Query
 {
-    public required int UserId { get; init; }
+    public required Guid UserId { get; init; }
 }
