@@ -30,6 +30,11 @@ namespace Exchange_Example_Api.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -56,7 +61,7 @@ namespace Exchange_Example_Api.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("Balance")
+                    b.Property<double>("Balance")
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("Email")
