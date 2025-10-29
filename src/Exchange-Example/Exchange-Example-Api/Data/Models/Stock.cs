@@ -13,6 +13,7 @@ public sealed class Stock
     [MaxLength(500)]
     public string Description { get; set; } = null!;
     public ICollection<UserStocks> UserStocks { get; set; } = [];
+    public ICollection<FavoriteStocks> FavoriteStocks { get; set; } = [];
 }
 
 // Leave the price here for now. When updating it can also be updated here.

@@ -8,4 +8,5 @@ public sealed class User
     public string Email { get; set; } = null!;
     public double Balance { get; set; }
     public ICollection<UserStocks> UserStocks { get; set; } = [];
+    public ICollection<FavoriteStocks> FavoriteStocks { get; set; } = [];
 }

@@ -22,6 +22,29 @@ namespace Exchange_Example_Api.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Exchange_Example_Api.Data.Models.FavoriteStocks", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("StockId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StockId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FavoriteStocks");
+                });
+
             modelBuilder.Entity("Exchange_Example_Api.Data.Models.Stock", b =>
                 {
                     b.Property<int>("Id")
@@ -108,6 +131,25 @@ namespace Exchange_Example_Api.Data.Migrations
                     b.ToTable("user_stocks", (string)null);
                 });
 
+            modelBuilder.Entity("Exchange_Example_Api.Data.Models.FavoriteStocks", b =>
+                {
+                    b.HasOne("Exchange_Example_Api.Data.Models.Stock", "Stock")
+                        .WithMany("FavoriteStocks")
+                        .HasForeignKey("StockId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Exchange_Example_Api.Data.Models.User", "User")
+                        .WithMany("FavoriteStocks")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Stock");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Exchange_Example_Api.Data.Models.UserStocks", b =>
                 {
                     b.HasOne("Exchange_Example_Api.Data.Models.Stock", "Stock")
@@ -129,11 +171,15 @@ namespace Exchange_Example_Api.Data.Migrations
 
             modelBuilder.Entity("Exchange_Example_Api.Data.Models.Stock", b =>
                 {
+                    b.Navigation("FavoriteStocks");
+
                     b.Navigation("UserStocks");
                 });
 
             modelBuilder.Entity("Exchange_Example_Api.Data.Models.User", b =>
                 {
+                    b.Navigation("FavoriteStocks");
+
                     b.Navigation("UserStocks");
                 });
 #pragma warning restore 612, 618
