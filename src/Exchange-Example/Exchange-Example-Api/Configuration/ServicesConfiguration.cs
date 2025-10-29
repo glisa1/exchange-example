@@ -1,7 +1,7 @@
 ﻿using Exchange_Example_Api.Features.BuyStocks;
 using Exchange_Example_Api.Features.CreateUser;
 using Exchange_Example_Api.Features.DepositCash;
-using Exchange_Example_Api.Features.GetAllStocks;
+using Exchange_Example_Api.Features.GetFavoriteStocks;
 using Exchange_Example_Api.Features.GetUserBalance;
 using Exchange_Example_Api.Features.GetUserStocks;
 using Exchange_Example_Api.Features.SearchStocks;
