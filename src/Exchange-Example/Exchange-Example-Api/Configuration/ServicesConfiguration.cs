@@ -4,6 +4,7 @@ using Exchange_Example_Api.Features.DepositCash;
 using Exchange_Example_Api.Features.GetAllStocks;
 using Exchange_Example_Api.Features.GetUserBalance;
 using Exchange_Example_Api.Features.GetUserStocks;
+using Exchange_Example_Api.Features.SearchStocks;
 using Exchange_Example_Api.Features.WithdrawCash;
 
 namespace Exchange_Example_Api.Configuration;
@@ -19,5 +20,6 @@ public static class ServicesConfiguration
         services.AddScoped<IGetUserBalanceService, GetUserBalanceService>();
         services.AddScoped<IDepositCashService, DepositCashService>();
         services.AddScoped<IWithdrawCashService, WithdrawCashService>();
+        services.AddScoped<ISearchStockService, SearchStockService>();
     }
 }
