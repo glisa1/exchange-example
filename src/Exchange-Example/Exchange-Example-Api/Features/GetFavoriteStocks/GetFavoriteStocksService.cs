@@ -6,10 +6,10 @@ namespace Exchange_Example_Api.Features.GetFavoriteStocks;
 
 public class GetFavoriteStocksService(AppDbContext appDbContext) : IGetFavoriteStocksService
 {
-    public async Task<List<Stock>> GetFavoriteStocks(int userId, CancellationToken cancellationToken = default)
+    public async Task<List<Stock>> GetFavoriteStocks(Guid userId, CancellationToken cancellationToken = default)
     {
         return await appDbContext.Users
-            .Where(u => u.Id == userId)
+            .Where(u => u.KeycloakId == userId)
             .SelectMany(u => u.FavoriteStocks)
             .Select(fs => fs.Stock)
             .ToListAsync(cancellationToken);

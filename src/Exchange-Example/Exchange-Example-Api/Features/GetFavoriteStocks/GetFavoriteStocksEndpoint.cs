@@ -10,7 +10,7 @@ public static class GetFavoriteStocksEndpoint
     {
         app.MapGet("/api/get-favorite-stocks", async (
             IQueryRequestHandler<GetFavoriteStocksQuery, List<Stock>> queryHandler,
-            [FromQuery] int userId,
+            [FromQuery] Guid userId,
             CancellationToken cancelationToken) =>
         {
             var query = new GetFavoriteStocksQuery

@@ -4,5 +4,5 @@ namespace Exchange_Example_Api.Features.GetFavoriteStocks;
 
 public interface IGetFavoriteStocksService
 {
-    Task<List<Stock>> GetFavoriteStocks(int userId, CancellationToken cancellationToken = default);
+    Task<List<Stock>> GetFavoriteStocks(Guid userId, CancellationToken cancellationToken = default);
 }

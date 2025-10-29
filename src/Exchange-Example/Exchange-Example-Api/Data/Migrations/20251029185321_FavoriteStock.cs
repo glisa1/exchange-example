@@ -12,7 +12,7 @@ namespace Exchange_Example_Api.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "FavoriteStocks",
+                name: "favorite_stocks",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -24,13 +24,13 @@ namespace Exchange_Example_Api.Data.Migrations
                 {
                     table.PrimaryKey("PK_FavoriteStocks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_FavoriteStocks_stocks_StockId",
+                        name: "FK_favorite_stocks_stocks_StockId",
                         column: x => x.StockId,
                         principalTable: "stocks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FavoriteStocks_users_UserId",
+                        name: "FK_favorite_stocks_users_UserId",
                         column: x => x.UserId,
                         principalTable: "users",
                         principalColumn: "Id",
@@ -38,13 +38,13 @@ namespace Exchange_Example_Api.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FavoriteStocks_StockId",
-                table: "FavoriteStocks",
+                name: "IX_favorite_stocks_StockId",
+                table: "favorite_stocks",
                 column: "StockId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FavoriteStocks_UserId",
-                table: "FavoriteStocks",
+                name: "IX_favorite_stocks_UserId",
+                table: "favorite_stocks",
                 column: "UserId");
         }
 
@@ -52,7 +52,7 @@ namespace Exchange_Example_Api.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "FavoriteStocks");
+                name: "favorite_stocks");
         }
     }
 }
