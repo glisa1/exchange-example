@@ -42,7 +42,7 @@ namespace Exchange_Example_Api.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FavoriteStocks");
+                    b.ToTable("favorite_stocks", (string)null);
                 });
 
             modelBuilder.Entity("Exchange_Example_Api.Data.Models.Stock", b =>

@@ -7,6 +7,7 @@ public sealed class GetFavoriteStocksQueryHandler(IGetFavoriteStocksService getF
 {
     public async Task<List<Stock>> Handle(GetFavoriteStocksQuery query, CancellationToken cancellationToken = default)
     {
+        // TODO: Refactor to use a dto
         return await getFavoriteStocksService.GetFavoriteStocks(query.UserId, cancellationToken);
     }
 }

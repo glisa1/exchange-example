@@ -12,14 +12,18 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<UserStocks>().ToTable("user_stocks").HasKey(us => us.Id);
-        modelBuilder.Entity<UserStocks>().Property(us => us.UserId).IsRequired();
         modelBuilder.Entity<UserStocks>().HasOne(us => us.Stock).WithMany(s => s.UserStocks).HasForeignKey(us => us.StockId);
         modelBuilder.Entity<UserStocks>().HasOne(us => us.User).WithMany(u => u.UserStocks).HasForeignKey(us => us.UserId);
         modelBuilder.Entity<UserStocks>().Property(us => us.Quantity).IsRequired().HasColumnType("decimal(18, 2)");
 
+        modelBuilder.Entity<FavoriteStocks>().ToTable("favorite_stocks").HasKey(fs => fs.Id);
+        modelBuilder.Entity<FavoriteStocks>().HasOne(fs => fs.Stock).WithMany(s => s.FavoriteStocks).HasForeignKey(fs => fs.StockId);
+        modelBuilder.Entity<FavoriteStocks>().HasOne(fs => fs.User).WithMany(u => u.FavoriteStocks).HasForeignKey(fs => fs.UserId);
+
         modelBuilder.Entity<Stock>().ToTable("stocks").HasKey(s => s.Id);
         modelBuilder.Entity<Stock>().Property(s => s.Ticker).IsRequired().HasMaxLength(10);
         modelBuilder.Entity<Stock>().Property(s => s.Name).IsRequired().HasMaxLength(100);
+        modelBuilder.Entity<Stock>().Property(s => s.Description).HasMaxLength(500);
         modelBuilder.Entity<Stock>().Property(s => s.Price).IsRequired().HasColumnType("decimal(18, 2)");
         modelBuilder.Entity<Stock>().HasMany(s => s.UserStocks).WithOne(us => us.Stock).HasForeignKey(us => us.StockId);
 

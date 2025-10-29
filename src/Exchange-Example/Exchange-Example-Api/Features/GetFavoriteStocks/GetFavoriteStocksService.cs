@@ -8,6 +8,7 @@ public class GetFavoriteStocksService(AppDbContext appDbContext) : IGetFavoriteS
 {
     public async Task<List<Stock>> GetFavoriteStocks(Guid userId, CancellationToken cancellationToken = default)
     {
+        // TODO: Query does not seem to work
         return await appDbContext.Users
             .Where(u => u.KeycloakId == userId)
             .SelectMany(u => u.FavoriteStocks)

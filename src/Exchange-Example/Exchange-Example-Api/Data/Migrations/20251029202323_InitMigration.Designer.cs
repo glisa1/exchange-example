@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Exchange_Example_Api.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251029185321_FavoriteStock")]
-    partial class FavoriteStock
+    [Migration("20251029202323_InitMigration")]
+    partial class InitMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,7 +45,7 @@ namespace Exchange_Example_Api.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FavoriteStocks");
+                    b.ToTable("favorite_stocks", (string)null);
                 });
 
             modelBuilder.Entity("Exchange_Example_Api.Data.Models.Stock", b =>
