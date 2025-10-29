@@ -6,26 +6,26 @@ namespace Exchange_Example_Api.Features.BuyStocks;
 
 public class BuyStocksService(AppDbContext dbContext) : IBuyStocksService
 {
-    public async Task BuyStocks(BuyStocksCommand model, Stock stock, CancellationToken cancellationToken = default)
+    public async Task BuyStocks(BuyStocksCommand command, Stock stock, CancellationToken cancellationToken = default)
     {
         var existingStocksForUser = await dbContext.UserStocks
-            .Where(us => us.UserId == model.UserId && us.StockId == model.StockId)
+            .Where(us => us.UserId == command.UserId && us.StockId == command.StockId)
             .FirstOrDefaultAsync(cancellationToken);
 
         if (existingStocksForUser != null)
         {
             // Switch to execute update async method
-            existingStocksForUser.Quantity += model.Quantity;
+            existingStocksForUser.Quantity += command.Quantity;
             dbContext.UserStocks.Update(existingStocksForUser);
         }
         else
         {
             var newUserStocks = new UserStocks
             {
-                UserId = model.UserId,
-                StockId = model.StockId,
+                UserId = command.UserId,
+                StockId = command.StockId,
                 Stock = stock,
-                Quantity = model.Quantity
+                Quantity = command.Quantity
             };
             await dbContext.UserStocks.AddAsync(newUserStocks, cancellationToken);
         }

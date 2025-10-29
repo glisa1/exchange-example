@@ -14,7 +14,7 @@ public static class ServicesConfiguration
     public static void ConfigureServices(this IServiceCollection services)
     {
         services.AddScoped<IBuyStocksService, BuyStocksService>();
-        services.AddScoped<IGetAllStocksService, GetAllStocksService>();
+        services.AddScoped<IGetFavoriteStocksService, GetFavoriteStocksService>();
         services.AddScoped<ICreateUserService, CreateUserService>();
         services.AddScoped<IGetUserStocksService, GetUserStocksService>();
         services.AddScoped<IGetUserBalanceService, GetUserBalanceService>();

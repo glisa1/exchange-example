@@ -13,18 +13,17 @@ public class SearchStockService(AppDbContext appDbContext) : ISearchStockService
 
         var totalRecords = await allSearchResults.CountAsync(cancellationToken);
 
-        var pagedResults = allSearchResults
+        var pagedResults = await allSearchResults
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
-            .Select(StockDto.FromEntity)
-            .ToList();
+            .ToListAsync(cancellationToken);
 
         return new SearchStockResult
         {
             PageNumber = pageNumber,
             PageSize = pageSize,
             TotalRecords = totalRecords,
-            Stocks = pagedResults
+            Stocks = [.. pagedResults.Select(StockDto.FromEntity)]
         };
     }
 }

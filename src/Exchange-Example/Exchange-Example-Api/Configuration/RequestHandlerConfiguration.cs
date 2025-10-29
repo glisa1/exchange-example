@@ -2,7 +2,7 @@
 using Exchange_Example_Api.Features.BuyStocks;
 using Exchange_Example_Api.Features.CreateUser;
 using Exchange_Example_Api.Features.DepositCash;
-using Exchange_Example_Api.Features.GetAllStocks;
+using Exchange_Example_Api.Features.GetFavoriteStocks;
 using Exchange_Example_Api.Features.GetUserBalance;
 using Exchange_Example_Api.Features.GetUserStocks;
 using Exchange_Example_Api.Features.WithdrawCash;
@@ -14,7 +14,7 @@ public static class RequestHandlerConfiguration
 {
     public static IServiceCollection AddRequestHandlers(this IServiceCollection services)
     {
-        services.AddScoped<IQueryRequestHandler<GetAllStocksQuery, List<Stock>>, GetAllStocksQueryHandler>();
+        services.AddScoped<IQueryRequestHandler<GetFavoriteStocksQuery, List<Stock>>, GetFavoriteStocksQueryHandler>();
         services.AddScoped<IQueryRequestHandler<GetUserStocksQuery, List<UserStocks>>, GetUserStocksQueryHandler>();
         services.AddScoped<IQueryRequestHandler<GetUserBalanceQuery, double>, GetUserBalanceHandler>();
 
