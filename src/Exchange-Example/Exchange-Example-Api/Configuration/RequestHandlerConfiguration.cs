@@ -14,7 +14,7 @@ public static class RequestHandlerConfiguration
 {
     public static IServiceCollection AddRequestHandlers(this IServiceCollection services)
     {
-        services.AddScoped<IQueryRequestHandler<GetFavoriteStocksQuery, List<Stock>>, GetFavoriteStocksQueryHandler>();
+        services.AddScoped<IQueryRequestHandler<GetFavoriteStocksQuery, List<GetFavoriteStocksDto>>, GetFavoriteStocksQueryHandler>();
         services.AddScoped<IQueryRequestHandler<GetUserStocksQuery, List<UserStocks>>, GetUserStocksQueryHandler>();
         services.AddScoped<IQueryRequestHandler<GetUserBalanceQuery, double>, GetUserBalanceHandler>();
 

@@ -1,5 +1,4 @@
-﻿using Exchange_Example_Api.Data.Models;
-using Exchange_Example_Api.Utils.Request;
+﻿using Exchange_Example_Api.Utils.Request;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Exchange_Example_Api.Features.GetFavoriteStocks;
@@ -9,7 +8,7 @@ public static class GetFavoriteStocksEndpoint
     public static void MapGetFavoriteStocksEndpoint(this IEndpointRouteBuilder app)
     {
         app.MapGet("/api/get-favorite-stocks", async (
-            IQueryRequestHandler<GetFavoriteStocksQuery, List<Stock>> queryHandler,
+            IQueryRequestHandler<GetFavoriteStocksQuery, List<GetFavoriteStocksDto>> queryHandler,
             [FromQuery] Guid userId,
             CancellationToken cancelationToken) =>
         {

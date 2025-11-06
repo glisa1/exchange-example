@@ -4,6 +4,8 @@ namespace Exchange_Example_Api.Data.Models;
 
 public sealed class Stock
 {
+    // TODO: Add stock categories.
+
     public int Id { get; set; }
     [MaxLength(10)]
     public string Ticker { get; set; } = null!;
